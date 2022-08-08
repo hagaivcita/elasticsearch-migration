@@ -208,12 +208,12 @@ Index.init_all_indices = function(on_change) {
   .then(
     function() {
       return Promise.all([
-        es.get('/_cluster/state/metadata', {
+        es.get('/_all', {
           "filter_path" : "metadata.indices.*.state,"
-            + "metadata.indices.*.settings.index.version.created,"
-            + "metadata.indices.*.settings.index.creation_date,"
-            + "metadata.indices.*.settings.index.number*,"
-            + "metadata.indices.*.settings.index.priority"
+            + "*.settings.index.version.created,"
+            + "*.settings.index.creation_date,"
+            + "*.settings.index.number*,"
+            + "*.settings.index.priority"
         }),
         es.get('/_cluster/health', {
           "level" : "indices",
@@ -248,7 +248,7 @@ Index.init_all_indices = function(on_change) {
           + _.padStart(date.getDay(), 2, '0');
       }
 
-      var state = d[0].metadata.indices;
+      var state = d[0];
       var health = d[1].indices;
       var stats = d[2].indices || {};
 
